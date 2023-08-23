@@ -2,11 +2,11 @@
 Este repositório contém uma API REST desenvolvida em Delphi utilizando o framework Horse. 
 A API é uma implementação de um serviço RESTful que demonstra a criação e manipulação de recursos por meio de verbos HTTP.
 
-##Sobre o Framework Horse
+## Sobre o Framework Horse
 O Horse é um framework web minimalista para Delphi que visa simplificar a criação de aplicações web e APIs REST. 
 Ele oferece uma abordagem simples e eficiente para lidar com rotas, middlewares e manipulação de requisições e respostas HTTP.
 
-##Recursos da API
+## Recursos da API
 A API implementa os seguintes recursos:
 
 1 .GET /cliente: Retorna a lista de produtos disponíveis.
@@ -15,7 +15,7 @@ A API implementa os seguintes recursos:
 4. PUT /cliente: Atualiza os detalhes de um produto existente com base nos dados fornecidos no corpo da solicitação.
 5. DELETE /cliente/{id}: Remove um produto específico com base no ID.
 
-##Exemplos de Requisições
+## Exemplos de Requisições
 
 GET /cliente
 GET http://localhost:9000/cliente
