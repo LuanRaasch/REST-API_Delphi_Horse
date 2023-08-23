@@ -28,9 +28,9 @@ A API implementa os seguintes recursos:
 
 #### Body:
  #### {
-    #### "nome": "Luan Carlos",
-    #### "email": "luan@teste.com.br",
-    #### "fone": "(11) 9999-9999"
+     "nome": "Luan Carlos",
+     "email": "luan@teste.com.br",
+     "fone": "(11) 9999-9999"
   #### }
 <----------------------------------------->  
 ### PUT /cliente
@@ -38,10 +38,10 @@ A API implementa os seguintes recursos:
 
 #### Body:
 #### {
-    #### "idCliente": 1,
-    #### "nome": "Luan Carlos Alterado",
-    #### "email": "luan@teste.com.br",
-    #### "fone": "(11) 9999-9999"
+    "idCliente": 1,
+     "nome": "Luan Carlos Alterado",
+     "email": "luan@teste.com.br",
+     "fone": "(11) 9999-9999"
 #### }
 <----------------------------------------->
 ### DELETE /cliente/{id}
