@@ -26,23 +26,23 @@ A API implementa os seguintes recursos:
 ### POST /cliente
 ### POST http://localhost:9000/cliente
 
- Body:
- {
-    "nome": "Luan Carlos",
-    "email": "luan@teste.com.br",
-    "fone": "(11) 9999-9999"
-  }
+#### Body:
+ #### {
+    #### "nome": "Luan Carlos",
+    #### "email": "luan@teste.com.br",
+    #### "fone": "(11) 9999-9999"
+  #### }
 <----------------------------------------->  
 ### PUT /cliente
 ### PUT http://localhost:9000/cliente
 
-Body:
-{
-    "idCliente": 1,
-    "nome": "Luan Carlos Alterado",
-    "email": "luan@teste.com.br",
-    "fone": "(11) 9999-9999"
-}
+#### Body:
+#### {
+    #### "idCliente": 1,
+    #### "nome": "Luan Carlos Alterado",
+    #### "email": "luan@teste.com.br",
+    #### "fone": "(11) 9999-9999"
+#### }
 <----------------------------------------->
 ### DELETE /cliente/{id}
 ### DELETE http://localhost:9000/cliente/1
