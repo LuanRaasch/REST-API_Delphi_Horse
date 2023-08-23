@@ -1,4 +1,4 @@
-#API REST em Delphi usando o Framework Horse
+# API REST em Delphi usando o Framework Horse
 Este repositório contém uma API REST desenvolvida em Delphi utilizando o framework Horse. 
 A API é uma implementação de um serviço RESTful que demonstra a criação e manipulação de recursos por meio de verbos HTTP.
 
