@@ -1,0 +1,56 @@
+unit Model.Cliente;
+
+interface
+
+uses FireDAC.Comp.Client, Data.DB, System.SysUtils, Model.Connection;
+
+type
+  TCliente = class
+
+    private
+      FID_CLIENTE: Integer;
+      FNOME: String;
+      FEMAIL: String;
+      FFONE: String;
+    public
+      constructor Create;
+      destructor Destroy; override;
+
+      property ID_CLIENTE : Integer read FID_CLIENTE write FID_CLIENTE;
+      property NOME : String read FNOME write FNOME;
+      property EMAIL : String read FEMAIL write FEMAIL;
+      property FONE : String read FFONE write FFONE;
+
+      function ListarCliente(order_by: String; out erro: String): TFDQuery;
+      function Inserir(out erro: String): Boolean;
+      function Excluir(out erro: String): Boolean;
+  end;
+
+implementation
+
+constructor TCliente.Create;
+begin
+  Model.Connection.Connect;
+end;
+
+destructor TCliente.Destroy;
+begin
+  Model.Connection.Disconect;
+end;
+
+function TCliente.ListarCliente(order_by: string; out erro: string): TFDQuery;
+begin
+  //
+end;
+
+function TCliente.Inserir(out erro: string): Boolean;
+begin
+  //
+end;
+
+function TCliente.Excluir(out erro: string): Boolean;
+begin
+  //
+end;
+
+end.

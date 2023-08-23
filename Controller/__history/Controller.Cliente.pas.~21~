@@ -1,0 +1,158 @@
+unit Controller.Cliente;
+
+interface
+
+uses Horse, System.JSON, System.SysUtils, Model.Cliente, FireDAC.Comp.Client,
+     Data.DB, DataSet.Serialize;
+
+procedure Registry;
+
+implementation
+
+procedure ListarClientes(Req: THorseRequest; Res: THorseResponse);
+var
+  cliente: TCliente;
+  query: TFDQuery;
+  erro: String;
+  arrayClientes: TJSONArray;
+  begin
+    try
+      cliente := TCliente.Create;
+    except
+      res.Send('Erro ao conectar com o banco').Status(500);
+      Exit;
+    end;
+
+    try
+      query := cliente.ListarCliente('', erro);
+
+      arrayClientes := query.ToJSONArray();
+
+      res.Send<TJSONArray>(arrayClientes);
+    finally
+      query.Free;
+      cliente.Free;
+    end;
+  end;
+
+procedure ListarClientesID(Req: THorseRequest; Res: THorseResponse);
+var
+  cliente: TCliente;
+  query: TFDQuery;
+  objClientes: TJSONObject;
+  erro: String;
+  begin
+    try
+      cliente := TCliente.Create;
+      cliente.ID_CLIENTE := Req.Params['id'].ToInteger;
+    except
+      res.Send('Erro ao conectar com o banco').Status(500);
+      Exit;
+    end;
+
+    try
+      query := cliente.ListarCliente('', erro);
+
+      if query.RecordCount > 0 then
+        begin
+          objClientes := query.ToJSONObject;
+          res.Send<TJSONObject>(objClientes);
+        end
+      else
+        res.Send('Cliente não encontrado').Status(404);
+
+    finally
+      query.Free;
+      cliente.Free;
+    end;
+  end;
+
+procedure AddClientes(Req: THorseRequest; Res: THorseResponse);
+var
+  cliente: TCliente;
+  body : TJSONValue;
+  objCliente: TJSONObject;
+  erro: String;
+  begin
+    try
+      cliente := TCliente.Create;
+    except
+      res.Send('Erro ao conectar com o banco de dados').Status(500);
+      Exit;
+    end;
+
+    try
+      try
+        body := TJSONObject.ParseJSONValue(TEncoding.UTF8.GetBytes(req.Body), 0) as TJSONValue;
+
+        cliente.NOME  := body.GetValue<String>('nome', '');
+        cliente.EMAIL := body.GetValue<String>('email', '');
+        cliente.FONE  := body.GetValue<String>('fone', '');
+        cliente.Inserir(erro);
+
+        body.Free;
+
+        if erro <> '' then
+          raise Exception.Create(erro);
+
+      except on ex:exception do
+        begin
+          res.Send(ex.Message).Status(400);
+          Exit;
+        end;
+      end;
+
+      objCliente := TJSONObject.Create;
+      objCliente.AddPair('id_cliente', cliente.ID_CLIENTE.ToString);
+
+      res.Send<TJSONObject>(objCliente).Status(201);
+    finally
+      cliente.Free;
+    end;
+  end;
+
+procedure DeleteClientes(Req: THorseRequest; Res: THorseResponse);
+var
+  cliente: TCliente;
+  objCliente: TJSONObject;
+  erro: String;
+  begin
+    //CONEXÃO COM O BANCO DE DADOS
+    try
+      cliente := TCliente.Create;
+    except
+      res.Send('Erro ao conectar com o banco de dados').Status(500);
+      Exit;
+    end;
+
+    try
+      try
+        cliente.ID_CLIENTE := req.Params['id'].ToInteger;
+
+        if not cliente.Excluir(erro) then
+          raise Exception.Create(erro);
+      except on ex:exception do
+        begin
+          res.Send(ex.Message).Status(400);
+          Exit;
+        end;
+      end;
+
+      objCliente := TJSONObject.Create;
+      objCliente.AddPair('id_cliente', cliente.ID_CLIENTE.ToString);
+
+      res.Send<TJSONObject>(objCliente);
+    finally
+      cliente.Free;
+    end;
+  end;
+
+procedure Registry;
+begin
+  THorse.Get('/cliente', ListarClientes);
+  THorse.Get('/cliente/:id', ListarClientesID);
+  THorse.Post('/cliente', AddClientes);
+  THorse.Delete('/cliente/:id', DeleteClientes);
+end;
+
+end.

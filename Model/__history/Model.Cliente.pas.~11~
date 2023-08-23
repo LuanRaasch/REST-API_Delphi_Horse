@@ -1,0 +1,115 @@
+unit Model.Cliente;
+
+interface
+
+uses FireDAC.Comp.Client, Data.DB, System.SysUtils, Model.Connection;
+
+type
+  TCliente = class
+
+    private
+      FID_CLIENTE: Integer;
+      FNOME: String;
+      FEMAIL: String;
+      FFONE: String;
+    public
+      constructor Create;
+      destructor Destroy; override;
+
+      property ID_CLIENTE : Integer read FID_CLIENTE write FID_CLIENTE;
+      property NOME : String read FNOME write FNOME;
+      property EMAIL : String read FEMAIL write FEMAIL;
+      property FONE : String read FFONE write FFONE;
+
+      function ListarCliente(order_by: String; out erro: String): TFDQuery;
+      function Inserir(out erro: String): Boolean;
+      function Excluir(out erro: String): Boolean;
+  end;
+
+implementation
+
+constructor TCliente.Create;
+begin
+  Model.Connection.Connect;
+end;
+
+destructor TCliente.Destroy;
+begin
+  Model.Connection.Disconect;
+end;
+
+function TCliente.ListarCliente(order_by: string; out erro: string): TFDQuery;
+var
+  Query: TFDQuery;
+begin
+  try
+    Query := TFDQuery.Create(nil);
+    Query.Connection := Model.Connection.FConnection;
+
+    with Query do
+      begin
+        Active := False;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM TAB_CLIENTE WHERE 1 = 1');
+
+        if ID_CLIENTE > 0 then
+            begin
+              SQL.Add('AND ID_CLIENTE = :ID_CLIENTE');
+              ParamByName('ID_CLIENTE').Value := ID_CLIENTE;
+            end;
+
+        if order_by = '' then
+            SQL.Add('ORDER BY NOME')
+        else
+          SQL.Add('ORDER BY NOME' + order_by);
+
+        Active := True;
+      end;
+
+      erro := '';
+
+      Result := Query;
+  except on ex:Exception do
+    begin
+      erro := 'Erro ao consultar clientes: ' + ex.Message;
+      Result := nil;
+    end;
+
+  end;
+end;
+
+function TCliente.Inserir(out erro: string): Boolean;
+begin
+  //
+end;
+
+function TCliente.Excluir(out erro: string): Boolean;
+var
+  query : TFDQuery;
+begin
+  try
+    query := TFDQuery.Create(nil);
+    query.Connection := Model.Connection.FConnection;
+
+    with query do
+      begin
+        Active := False;
+        SQL.Clear;
+        SQL.Add('DELETE FROM TAB_CLIENTE WHERE ID_CLIENTE = :ID_CLIENTE');
+        ParamByName('ID_CLIENTE').Value := ID_CLIENTE;
+        ExecSQL;
+      end;
+
+    query.Free;
+    erro := '';
+    Result := True;
+
+  except on ex:exception do
+    begin
+      erro := 'Erro ao excluir cliente ' + ex.Message;
+      Result := False;
+    end;
+  end;
+end;
+
+end.
