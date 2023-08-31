@@ -8,11 +8,11 @@ type
   TCliente = class
 
     private
-    //PROPRIEDADES OU ATRIBUTOS
       FID_CLIENTE: Integer;
       FNOME: String;
       FEMAIL: String;
       FFONE: String;
+
     public
     //CONTRUTOR E DESTRUTOR
       constructor Create;

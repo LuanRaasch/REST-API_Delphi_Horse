@@ -1,0 +1,21 @@
+unit Controller.Usuario;
+
+interface
+
+uses Horse, System.JSON, System.SysUtils, Model.Cliente, FireDAC.Comp.Client,
+     Data.DB, DataSet.Serialize;
+
+procedure Registry;
+
+procedure validarAcesso;
+
+implementation
+
+procedure Registry;
+begin
+  //THorse.Get('/cliente', ListarClientes);
+end;
+
+
+
+end.

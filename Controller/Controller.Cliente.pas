@@ -88,6 +88,7 @@ var
         cliente.NOME  := body.GetValue<String>('nome', '');
         cliente.EMAIL := body.GetValue<String>('email', '');
         cliente.FONE  := body.GetValue<String>('fone', '');
+
         cliente.Inserir(erro);
 
         body.Free;
@@ -147,7 +148,7 @@ var
     end;
   end;
 
-  procedure EditClientes(Req: THorseRequest; Res: THorseResponse);
+procedure EditClientes(Req: THorseRequest; Res: THorseResponse);
 var
   cliente: TCliente;
   body : TJSONValue;
@@ -193,12 +194,12 @@ var
   end;
 
 procedure Registry;
-begin
-  THorse.Get('/cliente', ListarClientes);
-  THorse.Get('/cliente/:id', ListarClientesID);
-  THorse.Post('/cliente', AddClientes);
-  THorse.Delete('/cliente/:id', DeleteClientes);
-  THorse.Put('/cliente', EditClientes);
-end;
+  begin
+    THorse.Get('/cliente', ListarClientes);
+    THorse.Get('/cliente/:id', ListarClientesID);
+    THorse.Post('/cliente', AddClientes);
+    THorse.Delete('/cliente/:id', DeleteClientes);
+    THorse.Put('/cliente', EditClientes);
+  end;
 
 end.

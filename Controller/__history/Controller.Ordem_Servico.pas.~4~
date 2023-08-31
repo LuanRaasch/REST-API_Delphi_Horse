@@ -1,0 +1,76 @@
+unit Controller.Ordem_Servico;
+
+interface
+
+uses Horse, System.JSON, System.SysUtils, Model.Ordem_Servico, FireDAC.Comp.Client,
+     Data.DB, DataSet.Serialize;
+
+procedure Registry;
+
+implementation
+
+procedure ListarOrdemServico(Req: THorseRequest; Res: THorseResponse);
+var
+  ordemServico: TOrdem_Servico;
+  query: TFDQuery;
+  erro: String;
+  arrayOrdemServico: TJSONArray;
+  begin
+    try
+      ordemServico := TOrdem_Servico.Create;
+    except
+      res.Send('Erro ao conectar com o banco').Status(500);
+      Exit;
+    end;
+
+    try
+      query := ordemServico.ListarOdemServico('', erro);
+
+      arrayOrdemServico := query.ToJSONArray();
+
+      res.Send<TJSONArray>(arrayOrdemServico);
+    finally
+      query.Free;
+      ordemServico.Free;
+    end;
+  end;
+
+procedure ListarOrdemServicoID(Req: THorseRequest; Res: THorseResponse);
+var
+  ordemServico: TOrdem_Servico;
+  query: TFDQuery;
+  objOrdemServico: TJSONObject;
+  erro: String;
+  begin
+    try
+      ordemServico := TOrdem_Servico.Create;
+      ordemServico.ID_ORDEM_SERVICO := Req.Params['id'].ToInteger;
+    except
+      res.Send('Erro ao conectar com o banco').Status(500);
+      Exit;
+    end;
+
+    try
+      query := ordemServico.ListarOdemServico('', erro);
+
+      if query.RecordCount > 0 then
+        begin
+          objOrdemServico := query.ToJSONObject;
+          res.Send<TJSONObject>(objOrdemServico);
+        end
+      else
+        res.Send('Ordem de serviço não encontrada').Status(404);
+
+    finally
+      query.Free;
+      ordemServico.Free;
+    end;
+  end;
+
+procedure Registry;
+  begin
+    THorse.Get('/ordemservico', ListarOrdemServico);
+    THorse.Get('/ordemservico/:id', ListarOrdemServicoID);
+  end;
+
+end.

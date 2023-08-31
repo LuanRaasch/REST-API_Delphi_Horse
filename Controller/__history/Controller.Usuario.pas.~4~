@@ -1,0 +1,20 @@
+unit Controller.Usuario;
+
+interface
+
+uses Horse, System.JSON, System.SysUtils, Model.Cliente, FireDAC.Comp.Client,
+     Data.DB, DataSet.Serialize;
+
+procedure Registry;
+
+
+implementation
+
+procedure Registry;
+begin
+  //
+end;
+
+
+
+end.

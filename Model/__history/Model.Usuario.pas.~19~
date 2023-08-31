@@ -1,0 +1,100 @@
+unit Model.Usuario;
+
+interface
+
+uses FireDAC.Comp.Client, Data.DB, System.SysUtils, Model.Connection, FireDAC.DApt;
+
+type
+  TUsuario = class
+    private
+
+      ID_USUARIO : Integer;
+      NOME_USUARIO : String;
+      SENHA : String;
+      TOKEN : String;
+
+    public
+
+    constructor Create;
+    destructor Destroy; override;
+
+//    property ID_USUARIO : Integer read FID_USUARIO write FID_USUARIO;
+//    property NOME_USUARIO : String read FNOME_USUARIO write FNOME_USUARIO;
+//    property SENHA : String read FSENHA write FSENHA;
+//    property TOKEN : String read FTOKEN write FTOKEN;
+
+    function Buscar(out erro: String): TFDQuery;
+    function Inserir(out erro: String): Boolean;
+    function Excluir(out erro: String): Boolean;
+    function Editar(out erro: String): Boolean;
+    function ValidarAcesso(const AUsername, APassword: string): Boolean;
+end;
+
+implementation
+
+constructor TUsuario.Create;
+begin
+  Model.Connection.Connect; //Ao criar o TUsuario ele automaticamente conecta com o banco de dados.
+end;
+
+destructor TUsuario.Destroy;
+begin
+  Model.Connection.Disconect;
+end;
+
+function TUsuario.Buscar(out erro: string): TFDQuery;
+var
+  Query: TFDQuery;
+begin
+  try
+    Query := TFDQuery.Create(nil);
+    Query.Connection := Model.Connection.FConnection;
+
+    with Query do
+      begin
+        Active := False;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM TAB_USUARIO WHERE NOME_USUARIO = :NOME_USUARIO AND SENHA = :SENHA');
+
+        ParamByName('NOME_USUARIO').Value  := NOME_USUARIO;
+        ParamByName('SENHA').Value := SENHA;
+
+        Active := True;
+      end;
+
+      erro := '';
+      //query.Free;
+      Result := Query;
+  except on ex:Exception do
+    begin
+      erro := 'Erro ao consultar usuario: ' + ex.Message;
+      Result := nil;
+    end;
+
+  end;
+end;
+
+function TUsuario.Inserir(out erro: string): Boolean;
+begin
+  //
+end;
+
+function TUsuario.Excluir(out erro: string): Boolean;
+begin
+  //
+end;
+
+function TUsuario.Editar(out erro: string): Boolean;
+begin
+  //
+end;
+
+function TUsuario.ValidarAcesso(const AUsername, APassword: string): Boolean;
+var
+  Query: TFDQuery;
+  _usuario, _senha: String;
+begin
+  //
+end;
+
+end.
