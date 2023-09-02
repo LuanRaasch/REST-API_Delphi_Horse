@@ -19,9 +19,7 @@ type
       FPRIORIDADE: String;
       FFORMA_ATENDIMENTO: String;
 
-      public
-
-      //Creator and Destructor
+    public
       constructor Create;
       destructor Destroy; override;
 

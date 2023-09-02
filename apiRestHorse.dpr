@@ -18,7 +18,9 @@ uses
   Model.Usuario in 'Model\Model.Usuario.pas',
   Controller.Usuario in 'Controller\Controller.Usuario.pas',
   Model.Ordem_Servico in 'Model\Model.Ordem_Servico.pas',
-  Controller.Ordem_Servico in 'Controller\Controller.Ordem_Servico.pas';
+  Controller.Ordem_Servico in 'Controller\Controller.Ordem_Servico.pas',
+  Model.Tramite_Ordem_Servico in 'Model\Model.Tramite_Ordem_Servico.pas',
+  Controller.Tramite_Ordem_Servico in 'Controller\Controller.Tramite_Ordem_Servico.pas';
 
 begin
   THorse.Use(Jhonson());
@@ -28,16 +30,23 @@ begin
       Usuario: TUsuario;
     begin
       Usuario := TUsuario.Create;
+
+      if Usuario.ValidarAcesso(AUsername, APassword) then
+        Writeln( '<--- Usuário logado: ' + AUsername + ' Senha: ' + APassword, ' --->')
+      else
+        Writeln( '<--- Tentativa login: ' + AUsername + ' Senha: ' + APassword, ' --->');
+
       Result := Usuario.ValidarAcesso(AUsername, APassword);
     end));
 
   Controller.Cliente.Registry;
   Controller.Usuario.Registry;
   Controller.Ordem_Servico.Registry;
+  Controller.Tramite_Ordem_Servico.Registry;
 
   THorse.Listen(9000, procedure
   begin
-    Writeln( 'API iniciada na porta: ', IntToStr(THorse.Port));
+    Writeln( '<--- API iniciada na porta: ' + IntToStr(THorse.Port), ' --->');
   end);
 
 end.

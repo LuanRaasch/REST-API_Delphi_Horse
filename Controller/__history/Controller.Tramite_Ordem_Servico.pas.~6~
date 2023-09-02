@@ -1,0 +1,49 @@
+unit Controller.Tramite_Ordem_Servico;
+
+interface
+
+uses Horse, System.JSON, System.SysUtils, Model.Tramite_Ordem_Servico, FireDAC.Comp.Client,
+     Data.DB, DataSet.Serialize;
+
+procedure Registry;
+
+implementation
+
+procedure ListarTramiteOrdemServicoID(Req: THorseRequest; Res: THorseResponse);
+var
+  tramiteOrdemServico: TTramite_Ordem_Servico;
+  query: TFDQuery;
+  arrayTramiteOrdemServico: TJSONArray;
+  erro: String;
+  begin
+    try
+      tramiteOrdemServico := TTramite_Ordem_Servico.Create;
+      tramiteOrdemServico.ID_ORDEM_SERVICO_REF := Req.Params['id'].ToInteger;
+    except
+      res.Send('Erro ao conectar com o banco').Status(500);
+      Exit;
+    end;
+
+    try
+      query := tramiteOrdemServico.ListarTramiteOdemServico('', erro);
+
+      if query.RecordCount > 0 then
+        begin
+          arrayTramiteOrdemServico := query.ToJSONArray();
+          res.Send<TJSONArray>(arrayTramiteOrdemServico);
+        end
+      else
+        res.Send('Nenhum trâmite encontrado').Status(404);
+
+    finally
+      query.Free;
+      tramiteOrdemServico.Free;
+    end;
+  end;
+
+  procedure Registry;
+  begin
+    THorse.Get('/ordemservico/tramite/:id', ListarTramiteOrdemServicoID);
+  end;
+
+end.

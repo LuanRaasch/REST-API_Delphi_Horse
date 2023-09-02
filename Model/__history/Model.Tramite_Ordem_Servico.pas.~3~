@@ -1,0 +1,49 @@
+unit Model.Tramite_Ordem_Servico;
+
+interface
+
+uses FireDAC.Comp.Client, Data.DB, System.SysUtils, Model.Connection;
+
+type
+  TTramite_Ordem_Servico = class
+
+  private
+      FID_TRAMITE_ORDEM_SERVICO: Integer;
+      FID_ORDEM_SERVICO_REF: Integer;
+      FID_USUARIO_CRIADOR: Integer;
+      FTRAMITE_DESCRICAO: String;
+      FDATA_EMISSAO: TDateTime;
+      FANEXO: TBlobType;
+
+  public
+      constructor Create;
+      destructor Destroy; override;
+
+      property ID_TRAMITE_ORDEM_SERVICO : Integer read FID_TRAMITE_ORDEM_SERVICO write FID_TRAMITE_ORDEM_SERVICO;
+      property ID_ORDEM_SERVICO_REF : Integer read FID_ORDEM_SERVICO_REF write FID_ORDEM_SERVICO_REF;
+      property ID_USUARIO_CRIADOR : Integer read FID_USUARIO_CRIADOR write FID_USUARIO_CRIADOR;
+      property TRAMITE_DESCRICAO : String read FTRAMITE_DESCRICAO write FTRAMITE_DESCRICAO;
+      property DATA_EMISSAO : TDateTime read FDATA_EMISSAO write FDATA_EMISSAO;
+      property ANEXO : TBlobType read FANEXO write FANEXO;
+
+      function ListarTramiteOdemServico(order_by: String; out erro: String): TFDQuery;
+      function InserirTramiteOdemServico(out erro: String): Boolean;
+      function ExcluirTramiteOrdemServico(out erro: String): Boolean;
+      function EditarTramiteOdemServico(out erro: String): Boolean;
+
+
+  end;
+
+implementation
+
+constructor TTramite_Ordem_Servico.Create;
+begin
+  Model.Connection.Connect;
+end;
+
+destructor TTramite_Ordem_Servico.Destroy;
+begin
+  Model.Connection.Disconect;
+end;
+
+end.

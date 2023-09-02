@@ -1,0 +1,37 @@
+unit Model.Tramite_Ordem_Servico;
+
+interface
+
+uses FireDAC.Comp.Client, Data.DB, System.SysUtils, Model.Connection;
+
+type
+  TTramite_Ordem_Servico = class
+
+  private
+      FID_TRAMITE_ORDEM_SERVICO: Integer;
+      FID_ORDEM_SERVICO_REF: Integer;
+      FID_USUARIO_CRIADOR: Integer;
+      FTRAMITE_DESCRICAO: String;
+      FDATA_EMISSAO: TDateTime;
+      FANEXO: TBlobType;
+
+  public
+      constructor Create;
+      destructor Destroy; override;
+
+
+  end;
+
+implementation
+
+constructor TTramite_Ordem_Servico.Create;
+begin
+  Model.Connection.Connect;
+end;
+
+destructor TTramite_Ordem_Servico.Destroy;
+begin
+  Model.Connection.Disconect;
+end;
+
+end.

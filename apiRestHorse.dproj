@@ -158,6 +158,8 @@
         <DCCReference Include="Controller\Controller.Usuario.pas"/>
         <DCCReference Include="Model\Model.Ordem_Servico.pas"/>
         <DCCReference Include="Controller\Controller.Ordem_Servico.pas"/>
+        <DCCReference Include="Model\Model.Tramite_Ordem_Servico.pas"/>
+        <DCCReference Include="Controller\Controller.Tramite_Ordem_Servico.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
